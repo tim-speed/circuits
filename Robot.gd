@@ -45,6 +45,8 @@ func run_turn():
 	match current_task:
 		"Wander":
 			wander()
+		"Wait":
+			return
 
 func get_task_node():
 	if program.empty():
@@ -77,11 +79,16 @@ func process_conditional_node(node):
 	return true
 
 func wander():
+	var direction = randi() % 4
 	var velocity = Vector2()
-	velocity.x += randi() % 3 - 1
-	velocity.y += randi() % 3 - 1
-	
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+	match direction:
+		0:
+			velocity.x = 1
+		1:
+			velocity.x = -1
+		2:
+			velocity.y = 1
+		3:
+			velocity.y = -1
 
-	position += velocity
+	position += velocity * speed

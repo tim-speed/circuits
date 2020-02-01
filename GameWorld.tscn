@@ -10,7 +10,7 @@ script = ExtResource( 1 )
 [node name="Robot" parent="." groups=[
 "Robots",
 ] instance=ExtResource( 2 )]
-position = Vector2( 208, 144 )
+position = Vector2( 200, 136 )
 
 [node name="ProgramTimer" parent="." instance=ExtResource( 3 )]
 autostart = true

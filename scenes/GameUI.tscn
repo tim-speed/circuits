@@ -1,0 +1,93 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/chubby_retro_edge.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/GameUI.gd" type="Script" id=2]
+
+[node name="ControlUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Play" type="Button" parent="."]
+margin_left = 736.0
+margin_top = 512.0
+margin_right = 800.0
+margin_bottom = 576.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayPoly" type="Polygon2D" parent="Play"]
+position = Vector2( -24, -16 )
+polygon = PoolVector2Array( 32.0001, 24, 32.0001, 72, 80.0001, 48 )
+
+[node name="PausePoly" type="Polygon2D" parent="Play"]
+visible = false
+polygon = PoolVector2Array( 8, 56, 8, 8, 56, 8, 56, 56, 40, 56, 40, 8, 24, 8, 24, 56 )
+
+[node name="Restart" type="Button" parent="."]
+margin_left = 928.0
+margin_top = 512.0
+margin_right = 992.0
+margin_bottom = 576.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Restart"]
+position = Vector2( 4.92298, 0.466768 )
+scale = Vector2( 0.872675, 0.891782 )
+polygon = PoolVector2Array( 33.8549, 49.5495, 33.5979, 61.7582, 48.1197, 62.2722, 43.6218, 56.4892, 55.4449, 45.9512, 58.5292, 28.2165, 53.5173, 12.0239, 38.8669, 4.31321, 21.0037, 4.95578, 6.4818, 12.9235, 3.52602, 27.9595, 6.61031, 45.8227, 17.6624, 51.6057, 27.4293, 47.8788, 31.7987, 36.4413, 25.3731, 33.2285, 21.0037, 42.6098, 13.2929, 39.2685, 11.7508, 27.3169, 15.8632, 16.1363, 27.1723, 12.4095, 38.8669, 13.4376, 47.4772, 23.333, 47.9912, 36.9553, 46.1921, 44.152, 39.6379, 53.0193 )
+
+[node name="FastForward" type="Button" parent="."]
+margin_left = 832.0
+margin_top = 512.0
+margin_right = 896.0
+margin_bottom = 576.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FFPoly" type="Polygon2D" parent="FastForward"]
+polygon = PoolVector2Array( 8, 56, 32, 32, 32, 56, 56, 32, 32, 8, 32, 32, 8, 8 )
+
+[node name="NormalPoly" type="Polygon2D" parent="FastForward"]
+visible = false
+polygon = PoolVector2Array( 48, 56, 56, 56, 56, 8, 48, 8, 48, 32, 8, 8, 8, 56, 48, 32 )
+
+[node name="Turns" type="Panel" parent="."]
+margin_left = 768.0
+margin_top = 16.0
+margin_right = 992.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="Turns"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 144.0
+margin_bottom = 32.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "Turns Left:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Count" type="RichTextLabel" parent="Turns"]
+margin_left = 152.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 32.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "9001"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="FastForward" to="." method="_on_FastForward_pressed"]

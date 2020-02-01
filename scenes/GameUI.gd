@@ -10,6 +10,20 @@ var playing = false
 var fast_forwarding = false
 export var turns = 30
 
+func reset_buttons():
+	$Play.disabled = false
+	$Play/PlayPoly.visible = true
+	$Play/PausePoly.visible = false
+	playing = false
+	$FastForward.disabled = false
+	$FastForward/FFPoly.visible = true
+	$FastForward/NormalPoly.visible = false
+	fast_forwarding = false
+	
+func disable_buttons():
+	$Play.disabled = true
+	$FastForward.disabled = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

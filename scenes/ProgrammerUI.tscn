@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/chubby_retro_edge.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/ProgrammerUI.gd" type="Script" id=2]
+
+[node name="ProgrammerUI" type="Panel"]
+anchor_right = 0.25
+anchor_bottom = 0.693
+margin_bottom = 0.200012
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BotsLabel" type="RichTextLabel" parent="."]
+margin_left = 88.0
+margin_top = 32.0
+margin_right = 152.0
+margin_bottom = 56.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "Bots:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BotCount" type="RichTextLabel" parent="."]
+margin_left = 152.0
+margin_top = 32.0
+margin_right = 184.0
+margin_bottom = 56.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "7"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgramList" type="ItemList" parent="."]
+margin_left = 32.0
+margin_top = 80.0
+margin_right = 224.0
+margin_bottom = 384.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

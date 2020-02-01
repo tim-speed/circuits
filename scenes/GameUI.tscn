@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://fonts/chubby_retro_edge.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/GameUI.gd" type="Script" id=2]
+[ext_resource path="res://fonts/chubby_retro_edge_double.tres" type="DynamicFont" id=3]
 
 [node name="ControlUI" type="Control"]
 anchor_right = 1.0
@@ -10,6 +11,30 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Background" type="Panel" parent="."]
+margin_left = 704.0
+margin_right = 1024.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Placeholder" type="Panel" parent="."]
+margin_left = 736.0
+margin_top = 64.0
+margin_right = 992.0
+margin_bottom = 480.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Placeholder"]
+margin_top = 168.0
+margin_right = 256.0
+margin_bottom = 256.0
+custom_fonts/normal_font = ExtResource( 3 )
+text = "Select a Programmer"
 
 [node name="Play" type="Button" parent="."]
 margin_left = 736.0

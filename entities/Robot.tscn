@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprites/robot_frames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://entities/Robot.gd" type="Script" id=2]
+
+[node name="Robot" type="AnimatedSprite" groups=[
+"Robots",
+]]
+position = Vector2( 16, 16 )
+frames = ExtResource( 1 )
+animation = "MoveDown"
+frame = 2
+playing = true
+script = ExtResource( 2 )

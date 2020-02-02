@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameWorld.gd" type="Script" id=1]
-[ext_resource path="res://Robot.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/Robot.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ProgramTimer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/Level.gd" type="Script" id=4]
 
@@ -16,7 +16,6 @@ cell_size = Vector2( 16, 16 )
 format = 1
 script = ExtResource( 4 )
 
-[node name="Robot" parent="TileMap" groups=[
-"Robots",
-] instance=ExtResource( 2 )]
-position = Vector2( 48, 64 )
+[node name="Robot" parent="TileMap" instance=ExtResource( 2 )]
+position = Vector2( 144, 144 )
+frame = 1

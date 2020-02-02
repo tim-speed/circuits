@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://levels/Level0.gd" type="Script" id=1]
+[ext_resource path="res://entities/Robot.tscn" type="PackedScene" id=2]
 
 [node name="Level0" type="TileMap"]
+cell_size = Vector2( 16, 16 )
 format = 1
 script = ExtResource( 1 )
 turns = 34
+
+[node name="Robot" parent="." instance=ExtResource( 2 )]
+frame = 1

@@ -1,8 +1,15 @@
-extends Node2D
+extends AnimatedSprite
 
 var type = 0
 
 var program = [
+	{
+		type = "Task",
+		task = "Move",
+		options = {
+			direction_name = "Down"
+		}
+	},
 	{
 		type = "Gate",
 		condition = {
@@ -11,7 +18,7 @@ var program = [
 				coordinates = Vector2(8, 4)
 			}
 		},
-		else_position = 3
+		else_position = 4
 	},
 	{
 		type = "Task",
@@ -121,10 +128,18 @@ func wander():
 
 func move_in_direction(direction_name):
 	match direction_name:
-		"Up": move(Vector2(0, -1))
-		"Down": move(Vector2(0, 1))
-		"Left": move(Vector2(-1, 0))
-		"Right": move(Vector2(1, 0))
+		"Up": 
+			self.animation = "MoveUp"
+			move(Vector2(0, -1))
+		"Down": 
+			self.animation = "MoveDown"
+			move(Vector2(0, 1))
+		"Left":
+			self.animation = "MoveLeft" 
+			move(Vector2(-1, 0))
+		"Right":
+			self.animation = "MoveRight"
+			move(Vector2(1, 0))
 	
 func move(direction):
 	var target_position = Grid.request_move(self, direction)

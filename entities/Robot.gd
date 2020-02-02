@@ -25,6 +25,8 @@ var Grid
 
 var held_item
 
+var robo_vars = {}
+
 func _ready():
 	Grid = get_parent()
 
@@ -55,6 +57,9 @@ func get_task_node():
 		program_node = program[program_position]
 		
 		match program_node.type:
+			"SetVar":
+				robo_vars[program_node.options.name] = program_node.options.value
+				program_position += 1
 			"Task":
 				processing = false
 			"Gate":
@@ -71,6 +76,8 @@ func get_task_node():
 
 func process_conditional_node(node):
 	match node.type:
+		"IsVarEqual":
+			return is_var_equal(node.options.name, node.options.value)
 		"IsAtCoordinates":
 			return is_at_coordinates(node.options.coordinates)
 		"IsCompassOf":
@@ -85,6 +92,12 @@ func process_conditional_node(node):
 			return can_move_in_direction(node.options.direction_name)
 	return false
 
+func is_var_equal(name, value):
+	if !robo_vars.has(name):
+		return false
+	
+	return robo_vars[name] == value
+	
 func is_at_coordinates(coordinates):
 	var grid_position = Grid.world_to_map(position)
 	return (grid_position - coordinates).length() < 1

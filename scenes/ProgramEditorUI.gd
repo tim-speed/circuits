@@ -106,6 +106,11 @@ func compile(parser_output, index = 0):
 					task = "Move",
 					options = node.options
 				})
+			"SetVar":
+				compiled_output.push_back({
+					type = "SetVar",
+					options = node.options
+				})
 			_:
 				break
 		
@@ -146,6 +151,8 @@ func parse_node(parts):
 			node = { type = "EndWhile" }
 		"Move":
 			node = parse_move(parts)
+		"SetVar":
+			node = parse_set_var(parts)
 		_:
 			send_parse_error(part + "is not a valid keyword")
 		
@@ -242,21 +249,35 @@ func parse_condition(parts):
 			return {
 				type = "HasBrokenFriend"
 			}
+		"IsVarEqual":
+			return parse_condition_ive(parts)
 		"IsAtCoordinates":
 			return parse_condition_iac(parts)
 		"CanMoveInDirection":
 			return parse_condition_cmid(parts)
-		"IsNorthOf":
+		"IsAboveY":
 			return parse_condition_ixo(parts, "North")
-		"IsSouthOf":
+		"IsBelowY":
 			return parse_condition_ixo(parts, "South")
-		"IsEastOf":
+		"IsRightOfX":
 			return parse_condition_ixo(parts, "East")
-		"IsWestOf":
+		"IsLeftOfX":
 			return parse_condition_ixo(parts, "West")
 		_:
 			send_parse_error(condition_type + "is not a valid condition")
 			return
+
+func parse_condition_ive(parts):
+	var name = parts.pop_front()
+	var value_string = parts.pop_front()
+	
+	return {
+		type = "IsVarEqual",
+		options = {
+			name = name,
+			value = value_string
+		}
+	}
 
 func parse_condition_iac(parts):
 	var x_string = parts.pop_front()
@@ -311,6 +332,18 @@ func parse_move(parts):
 		type = "Move",
 		options = {
 			direction_name = direction
+		}
+	}
+
+func parse_set_var(parts):
+	var name = parts.pop_front()
+	var value = parts.pop_front()
+	
+	return {
+		type = "SetVar",
+		options = {
+			name = name,
+			value = value
 		}
 	}
 

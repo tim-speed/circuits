@@ -43,21 +43,27 @@ Any whitespace characters can be used to
 seperate the parts in your program
 
 # If Statements
-\"If\" must end with \"EndIf\"
-Example:
+\"If\" must be imediatly followed by
+a Condition and it's arguments.
+Operations may follow after.
+Each \"If\" block can optionaly include
+a single \"Else\"
+The end of your \"If\" must end with
+\"EndIf\"
+
+Example 1:
 If IsAtCoordinates 2 2
 	Move Up
 EndIf
 
-\"Else\" may also be used
-Example:
+Example 2:
 If HasBrokenFriend
 	Move Up
 Else
 	Move Down
 EndIf
 
-# Condition types
+# Conditions
 \"IsAtCoordinate\" must follow with
 coordinates for X and Y
 
@@ -75,7 +81,24 @@ a Var and value
  take a Y value
 
 \"IsRightOfX\" and \"IsLeftOfX\"
-take a X value"
+take a X value
+
+# Operations
+\"Move\" takes a value
+ of \"Up\", \"Down\", \"Left\", or \"Right\"
+
+\"SetVar\" takes two arguments
+a Var and value, which stores the value
+for later use with  \"IsVarEqual\" Condition
+
+# While
+A \"While\" similarl to \"If\" needs a Condition
+and must end with \"EndWhile\".
+Using a while block will make the program
+repeat the operation in the block until
+the Condition is no longer true
+
+"
 readonly = true
 draw_tabs = true
 __meta__ = {

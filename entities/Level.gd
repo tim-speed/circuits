@@ -4,6 +4,11 @@ class_name Level
 export var turns = 40
 enum { EMPTY = -1, ACTOR, OBSTACLE, OBJECT }
 
+func _init():
+	self.cell_quadrant_size = 16
+	self.cell_size.x = 16
+	self.cell_size.y = 16
+
 func _ready():
 	for child in get_children():
 		set_cellv(world_to_map(child.position), child.type)

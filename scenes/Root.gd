@@ -8,6 +8,10 @@ var level
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	load_level(current_level)
+	
+func _input(event):
+	if event.is_action_released("ui_accept"):
+		one_turn_if_paused()
 
 func load_level(level_num):
 	#Disconnect old level signals if it existed

@@ -1,5 +1,6 @@
 extends Control
 
+var compiled_program
 var parse_error
 
 var seperatorRegex = RegEx.new()
@@ -7,18 +8,94 @@ var intRegex = RegEx.new()
 var directionRegex = RegEx.new()
 
 func _ready():
-	print_debug("011".to_int())
-	print_debug("abc^&".to_int())
 	seperatorRegex.compile("(?<match>[0-9a-zA-Z]+)\\s*")
 	intRegex.compile("^[0-9]+$")
 	directionRegex.compile("^(Up)|(Down)|(Left)|(Right)$")
-	parse("""
-		If HasBrokenFriend
-			Move Up
-		Else
-			Move Down
-		EndIf
-	""")
+	
+	$SaveButton.connect("pressed", self, "save")
+	
+func save():
+	var text = $ProgramEditor.text
+	var parser_output = parse(text)
+	if parser_output:
+		compiled_program = compile(parser_output)
+		print_debug(compiled_program)
+
+func compile(parser_output, index = 0):
+	var compiled_output = []
+	
+	var inner_index = index
+	while true:
+		inner_index += 1
+		
+		var node = parser_output.pop_front()
+		
+		if !node:
+			break
+		
+		match node.type:
+			"If":
+				var gate = {
+					type = "Gate",
+					condition = node.condition
+				}
+				var compiled_children = compile(node.children, inner_index)
+				
+				inner_index += compiled_children.size()
+				
+				compiled_output.push_back(gate)
+				
+				for c in compiled_children:
+					compiled_output.push_back(c)
+				
+				if node.else_children.size():
+					inner_index += 1
+					
+					gate.else_position = inner_index
+					
+					var goto = {
+						type = "Goto"
+					}
+					compiled_output.push_back(goto)
+					
+					var compiled_else_children = compile(node.else_children, inner_index)
+					
+					inner_index += compiled_else_children.size()
+					
+					for c in compiled_else_children:
+						compiled_output.push_back(c)
+					
+					goto.position = inner_index
+				else:
+					gate.else_position = inner_index
+					
+			"While":
+				var gate = {
+					type = "Gate",
+					condition = node.condition
+				}
+				var compiled_children = compile(node.children, inner_index)
+				
+				inner_index += compiled_children.size()
+				
+				compiled_output.push_back(gate)
+				
+				for c in compiled_children:
+					compiled_output.push_back(c)
+				
+				gate.else_position = inner_index
+					
+			"Move":
+				compiled_output.push_back({
+					type = "Task",
+					task = "Move",
+					options = node.options
+				})
+			_:
+				break
+		
+				
+	return compiled_output
 
 func parse(text):
 	parse_error = null
@@ -34,6 +111,8 @@ func parse(text):
 		if !node:
 			return
 		program.push_back(node)
+		
+	return program
 
 func parse_node(parts):
 	var part = parts.pop_front() 
@@ -99,8 +178,7 @@ func parse_if(parts):
 					children.push_back(child_node)
 					
 	node.children = children
-	if else_children.size():
-		node.else_children = else_children
+	node.else_children = else_children
 	
 	return node
 

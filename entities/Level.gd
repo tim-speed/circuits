@@ -91,8 +91,9 @@ func request_move(pawn, direction):
 	var cell_info = get_cell_info(pawn, direction)
 	match cell_info.type:
 		FACTORY:
+			set_cellv(cell_info.start, EMPTY)
 			go_home(pawn)
-			return update_pawn_postion(pawn, cell_info.start, cell_info.target)
+			return map_to_world(cell_info.target)
 		EMPTY:
 			return update_pawn_postion(pawn, cell_info.start, cell_info.target)
 		OBJECT:
@@ -130,8 +131,10 @@ func go_home(pawn):
 	emit_signal("robot_num_change", num_robots, robots_in_need)
 
 func update_pawn_postion(pawn, cell_start, cell_target):
-	set_cellv(cell_target, pawn.type)
 	var cell_type = get_cellv(cell_start)
+	
 	if cell_type != FACTORY and cell_type != OBSTACLE:
 		set_cellv(cell_start, EMPTY)
+	set_cellv(cell_target, pawn.type)
+	
 	return map_to_world(cell_target)

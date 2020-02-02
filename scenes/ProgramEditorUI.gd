@@ -127,6 +127,9 @@ func parse(text):
 	
 	while parts.size():
 		var node = parse_node(parts)
+		if !(node || parse_error):
+			send_parse_error("Unknown parse error")
+		
 		print_debug(node)
 		if !node:
 			return
@@ -141,12 +144,16 @@ func parse_node(parts):
 	match part:
 		"If":
 			node = parse_if(parts)
+			if !(node || parse_error):
+				send_parse_error("Expected closing EndIf")
 		"Else":
 			node = { type = "Else" }
 		"EndIf":
 			node = { type = "EndIf" }
 		"While":
 			node = parse_while(parts)
+			if !(node || parse_error):
+				send_parse_error("Expected closing EndWhile")
 		"EndWhile":
 			node = { type = "EndWhile" }
 		"Move":
@@ -154,12 +161,9 @@ func parse_node(parts):
 		"SetVar":
 			node = parse_set_var(parts)
 		_:
-			send_parse_error(part + "is not a valid keyword")
-		
-	if !node:
-		if !parse_error:
-			send_parse_error("Unknown parse error at " + part)
-		return
+			if part:
+				send_parse_error(part + " is not a valid top level keyword")
+				
 	return node
 	
 func parse_if(parts):
@@ -264,7 +268,7 @@ func parse_condition(parts):
 		"IsLeftOfX":
 			return parse_condition_ixo(parts, "West")
 		_:
-			send_parse_error(condition_type + "is not a valid condition")
+			send_parse_error(condition_type + " is not a valid condition")
 			return
 
 func parse_condition_ive(parts):
@@ -349,6 +353,8 @@ func parse_set_var(parts):
 
 func send_parse_error(error_msg):
 	parse_error = error_msg
+	$ErrorPopup/Msg.text = error_msg
+	$ErrorPopup.popup()
 	
 	
 	

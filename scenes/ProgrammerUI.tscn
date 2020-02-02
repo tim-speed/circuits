@@ -6,7 +6,7 @@
 
 [node name="ProgrammerUI" type="ReferenceRect"]
 anchor_right = 0.25
-anchor_bottom = 0.693
+anchor_bottom = 0.586333
 margin_bottom = 0.200012
 script = ExtResource( 2 )
 __meta__ = {
@@ -40,9 +40,8 @@ anchor_left = 0.125
 anchor_top = 0.192
 anchor_right = 0.875
 anchor_bottom = 0.923
-margin_top = 0.127991
-margin_right = -1.52588e-05
-margin_bottom = 0.0319519
+margin_top = 0.416
+margin_bottom = -4.896
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,6 +49,6 @@ __meta__ = {
 [node name="Editor" parent="." instance=ExtResource( 3 )]
 visible = false
 margin_left = -728.0
-margin_top = -64.0
+margin_top = -128.0
 margin_right = -120.0
-margin_bottom = 181.76
+margin_bottom = 117.76

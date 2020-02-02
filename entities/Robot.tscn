@@ -8,7 +8,7 @@
 ]]
 frames = ExtResource( 1 )
 animation = "MoveDown"
-frame = 1
+frame = 2
 playing = true
 offset = Vector2( 16, 16 )
 script = ExtResource( 2 )

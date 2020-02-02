@@ -34,7 +34,7 @@ func load_level(level_num):
 	$ProgramTimer.wait_time = 1
 	# Renable buttons
 	$ControlUI.reset_buttons()
-	set_bots_remaining(level.num_robots)
+	set_bots_remaining(level.num_robots, level.robots_in_need)
 	
 	level.connect("robot_num_change", self, "set_bots_remaining")
 	level.connect("request_pause", self, "pause")
@@ -47,7 +47,8 @@ func one_turn_if_paused():
 		$ControlUI.turns = turns_remaining
 		get_tree().call_group("Robots", "run_turn")
 
-func set_bots_remaining(num):
+func set_bots_remaining(num, damaged):
+	$ControlUI/DamagedBots/Count.text = String(damaged)
 	$ProgrammerUI/BotCount.text = String(num)
 	
 func pause():

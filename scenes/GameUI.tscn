@@ -98,17 +98,16 @@ polygon = PoolVector2Array( 48, 56, 56, 56, 56, 8, 48, 8, 48, 32, 8, 8, 8, 56, 4
 
 [node name="Turns" type="Panel" parent="."]
 margin_left = 768.0
-margin_top = 16.0
+margin_top = 64.0
 margin_right = 992.0
-margin_bottom = 56.0
+margin_bottom = 104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Text" type="RichTextLabel" parent="Turns"]
-margin_left = 8.0
 margin_top = 8.0
-margin_right = 144.0
+margin_right = 136.0
 margin_bottom = 32.0
 custom_fonts/normal_font = ExtResource( 1 )
 text = "Turns Left:"
@@ -117,13 +116,43 @@ __meta__ = {
 }
 
 [node name="Count" type="RichTextLabel" parent="Turns"]
-margin_left = 152.0
+margin_left = 160.0
 margin_top = 8.0
-margin_right = 216.0
+margin_right = 224.0
 margin_bottom = 32.0
 custom_fonts/normal_font = ExtResource( 1 )
-text = "900
-"
+text = "900"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DamagedBots" type="Panel" parent="."]
+margin_left = 768.0
+margin_top = 16.0
+margin_right = 992.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="DamagedBots"]
+margin_left = -6.10352e-05
+margin_top = 8.0
+margin_right = 152.0
+margin_bottom = 32.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "Broken Bots:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Count" type="RichTextLabel" parent="DamagedBots"]
+margin_left = 160.0
+margin_top = 8.0
+margin_right = 224.0
+margin_bottom = 32.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "50"
 __meta__ = {
 "_edit_use_anchors_": false
 }

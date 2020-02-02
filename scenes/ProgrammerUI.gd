@@ -1,6 +1,6 @@
 extends Control
 
-const max_programs = 6
+const max_programs = 5
 const plist_spacing = 52
 
 var programs = {}

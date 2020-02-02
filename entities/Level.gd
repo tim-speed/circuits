@@ -8,6 +8,7 @@ const MAX_CELL_Y = 17
 
 export var turns = 40
 export var num_robots = 1
+var robots_in_need = 0 # Counted from scene, leave local
 
 signal robot_num_change
 signal request_pause
@@ -17,6 +18,7 @@ enum { EMPTY = -1, ACTOR, OBSTACLE, OBJECT, FACTORY }
 
 var Robot = preload("res://entities/Robot.tscn")
 
+# TODO: Support multiple factories
 var factory
 
 func _init():
@@ -28,6 +30,9 @@ func _ready():
 	factory = self.get_node("Factory")
 	for child in get_children():
 		set_cellv(world_to_map(child.position), child.type)
+		if child.type == OBJECT and child.item_name == "BrokenFriend":
+			robots_in_need += 1
+	emit_signal("robot_num_change", num_robots, robots_in_need)
 		
 func request_deploy_robot(program):
 	if !(factory && num_robots > 0):
@@ -43,7 +48,7 @@ func request_deploy_robot(program):
 	num_robots -= 1
 	
 	emit_signal("request_turn")
-	emit_signal("robot_num_change", num_robots)
+	emit_signal("robot_num_change", num_robots, robots_in_need)
 
 func get_cell_pawn(coordinates):
 	for node in get_children():
@@ -99,6 +104,7 @@ func can_move(pawn, direction):
 func go_home(pawn):
 	if pawn.held_item == "BrokenFriend":
 		num_robots += 2
+		robots_in_need -= 1
 	else:
 		num_robots += 1
 	
@@ -108,7 +114,7 @@ func go_home(pawn):
 		emit_signal("request_pause")
 	
 	pawn.queue_free()
-	emit_signal("robot_num_change", num_robots)
+	emit_signal("robot_num_change", num_robots, robots_in_need)
 
 func update_pawn_postion(pawn, cell_start, cell_target):
 	set_cellv(cell_target, pawn.type)

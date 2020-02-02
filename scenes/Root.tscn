@@ -26,9 +26,9 @@ __meta__ = {
 
 [node name="ProgrammerUI" parent="." instance=ExtResource( 4 )]
 margin_left = 736.0
-margin_top = 77.588
+margin_top = 142.0
 margin_right = 992.0
-margin_bottom = 493.588
+margin_bottom = 494.0
 [connection signal="fastforward" from="ControlUI" to="." method="_on_ControlUI_fastforward"]
 [connection signal="normalspeed" from="ControlUI" to="." method="_on_ControlUI_normalspeed"]
 [connection signal="paused" from="ControlUI" to="." method="_on_ControlUI_paused"]

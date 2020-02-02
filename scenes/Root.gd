@@ -32,11 +32,11 @@ func load_level(level_num):
 	stop_level()
 	var level_res = load(file_path)
 	level = level_res.instance()
-	turns_remaining = level.turns
 	for c in $LevelContainer.get_children():
 		$LevelContainer.remove_child(c)
 	$LevelContainer.add_child(level)
 	# Update / Reset UI
+	turns_remaining = level.turns
 	$GameUI.turns = turns_remaining
 	$ProgramTimer.wait_time = 1
 	# Renable buttons

@@ -5,6 +5,7 @@ signal paused
 signal fastforward
 signal normalspeed
 signal restart
+signal next_level
 
 var playing = false
 var fast_forwarding = false
@@ -66,3 +67,7 @@ func _on_FastForward_pressed():
 		fast_forwarding = true
 		print("FastForward")
 		emit_signal("fastforward")
+
+
+func _on_NextLevel_pressed():
+	emit_signal("next_level")

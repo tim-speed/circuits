@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/GameUI.gd" type="Script" id=2]
 [ext_resource path="res://fonts/chubby_retro_edge_double.tres" type="DynamicFont" id=3]
 
-[node name="ControlUI" type="Control"]
+[node name="GameUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
@@ -98,9 +98,9 @@ polygon = PoolVector2Array( 48, 56, 56, 56, 56, 8, 48, 8, 48, 32, 8, 8, 8, 56, 4
 
 [node name="Turns" type="Panel" parent="."]
 margin_left = 768.0
-margin_top = 64.0
+margin_top = 56.0
 margin_right = 992.0
-margin_bottom = 104.0
+margin_bottom = 96.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -156,6 +156,17 @@ text = "50"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="NextLevel" type="Button" parent="."]
+visible = false
+margin_left = 792.0
+margin_top = 104.0
+margin_right = 936.0
+margin_bottom = 132.0
+custom_fonts/font = ExtResource( 1 )
+disabled = true
+text = "Next Level"
 [connection signal="pressed" from="Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Restart" to="." method="_on_Restart_pressed"]
 [connection signal="pressed" from="FastForward" to="." method="_on_FastForward_pressed"]
+[connection signal="pressed" from="NextLevel" to="." method="_on_NextLevel_pressed"]

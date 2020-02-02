@@ -9,7 +9,7 @@
 script = ExtResource( 2 )
 current_level = 1
 
-[node name="ControlUI" parent="." instance=ExtResource( 1 )]
+[node name="GameUI" parent="." instance=ExtResource( 1 )]
 
 [node name="ProgramTimer" type="Timer" parent="."]
 script = ExtResource( 3 )
@@ -29,9 +29,10 @@ margin_left = 736.0
 margin_top = 142.0
 margin_right = 992.0
 margin_bottom = 494.0
-[connection signal="fastforward" from="ControlUI" to="." method="_on_ControlUI_fastforward"]
-[connection signal="normalspeed" from="ControlUI" to="." method="_on_ControlUI_normalspeed"]
-[connection signal="paused" from="ControlUI" to="." method="_on_ControlUI_paused"]
-[connection signal="playing" from="ControlUI" to="." method="_on_ControlUI_playing"]
-[connection signal="restart" from="ControlUI" to="." method="_on_ControlUI_restart"]
+[connection signal="fastforward" from="GameUI" to="." method="_on_GameUI_fastforward"]
+[connection signal="next_level" from="GameUI" to="." method="_on_GameUI_next_level"]
+[connection signal="normalspeed" from="GameUI" to="." method="_on_GameUI_normalspeed"]
+[connection signal="paused" from="GameUI" to="." method="_on_GameUI_paused"]
+[connection signal="playing" from="GameUI" to="." method="_on_GameUI_playing"]
+[connection signal="restart" from="GameUI" to="." method="_on_GameUI_restart"]
 [connection signal="timeout" from="ProgramTimer" to="." method="_on_ProgramTimer_timeout"]

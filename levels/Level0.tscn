@@ -13,3 +13,4 @@ position = Vector2( 256, 128 )
 
 [node name="Robot" parent="." instance=ExtResource( 2 )]
 position = Vector2( 256, 192 )
+frame = 1

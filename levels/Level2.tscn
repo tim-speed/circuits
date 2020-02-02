@@ -5,9 +5,10 @@
 [ext_resource path="res://entities/BrokenFriend.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/Rock.tscn" type="PackedScene" id=4]
 
-[node name="Level1" type="TileMap"]
+[node name="Level2" type="TileMap"]
 format = 1
 script = ExtResource( 1 )
+turns = 55
 
 [node name="Factory" parent="." instance=ExtResource( 2 )]
 position = Vector2( 288, 64 )

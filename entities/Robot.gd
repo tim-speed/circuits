@@ -85,7 +85,7 @@ func process_conditional_node(node):
 				node.options.v, node.options.compass_direction
 			)
 		"HasBrokenFriend":
-			return has_item("BrokenRobot")
+			return has_item("BrokenFriend")
 		"HasItem":
 			return has_item(node.options.item_name)
 		"CanMoveInDirection":
@@ -117,6 +117,12 @@ func is_compass_of(value, compass_direction):
 func has_item(item_name):
 	return (!item_name && held_item) || (item_name && (item_name == held_item))
 	
+func can_pick_up():
+	return !held_item
+
+func pick_up(item_name):
+	held_item = item_name
+	
 func can_move_in_direction(direction_name):
 	var direction
 	match direction_name:
@@ -125,7 +131,7 @@ func can_move_in_direction(direction_name):
 		"Left": direction = Vector2(-1, 0)
 		"Right": direction = Vector2(1, 0)
 	
-	return Grid.can_move(direction);
+	return Grid.can_move(self, direction);
 
 func wander():
 	var directionInt = randi() % 4

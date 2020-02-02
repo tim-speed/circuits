@@ -31,14 +31,17 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$Turns/Count.text = String(turns)
+	
+func pause():
+	$Play/PlayPoly.visible = true
+	$Play/PausePoly.visible = false
+	playing = false
+	print("Paused")
+	emit_signal("paused")
 
 func _on_Play_pressed():
 	if playing:
-		$Play/PlayPoly.visible = true
-		$Play/PausePoly.visible = false
-		playing = false
-		print("Paused")
-		emit_signal("paused")
+		pause()
 	else:
 		$Play/PlayPoly.visible = false
 		$Play/PausePoly.visible = true

@@ -7,24 +7,24 @@
 [node name="ProgramInterface" type="Control"]
 anchor_right = 0.5
 anchor_bottom = 0.64
-margin_bottom = -3.05176e-05
+margin_right = 224.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 512.0
-margin_bottom = 384.0
+margin_right = 1008.0
+margin_bottom = 576.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProgramEditor" type="TextEdit" parent="."]
-margin_left = 8.0
+margin_left = 512.0
 margin_top = 40.0
-margin_right = 504.0
-margin_bottom = 328.0
+margin_right = 1000.0
+margin_bottom = 520.0
 custom_fonts/font = ExtResource( 3 )
 highlight_current_line = true
 show_line_numbers = true
@@ -33,11 +33,54 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ProgramEditor2" type="TextEdit" parent="."]
+margin_left = 8.0
+margin_top = 40.0
+margin_right = 504.0
+margin_bottom = 568.0
+custom_fonts/font = ExtResource( 3 )
+text = "# General Rules
+Any whitespace characters can be used to 
+seperate the parts in your program
+
+# If Statements
+\"If\" must end with \"EndIf\"
+Example:
+If IsAtCoordinates 2 2
+	Move Up
+EndIf
+
+\"Else\" may also be used
+Example:
+If HasBrokenFriend
+	Move Up
+Else
+	Move Down
+EndIf
+
+# Condition types
+\"IsAtCoordinate\" must follow with
+coordinates for X and Y
+
+\"HasBrokenFriend\" has no arguments and
+resolves as true when a robot is caring
+a broken robot
+
+\"CanMoveInDirection\" takes one argument
+ of \"Up\", \"Down\", \"Left\", or \"Right\"
+
+\"IsVarEqual\" takes two"
+readonly = true
+draw_tabs = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="SaveButton" type="Button" parent="."]
-margin_left = 376.0
-margin_top = 336.0
-margin_right = 503.0
-margin_bottom = 376.0
+margin_left = 872.0
+margin_top = 528.0
+margin_right = 999.0
+margin_bottom = 568.0
 custom_fonts/font = ExtResource( 2 )
 text = "Save"
 __meta__ = {
@@ -45,10 +88,10 @@ __meta__ = {
 }
 
 [node name="CancelButton" type="Button" parent="."]
-margin_left = 272.0
-margin_top = 336.0
-margin_right = 368.0
-margin_bottom = 376.0
+margin_left = 768.0
+margin_top = 528.0
+margin_right = 864.0
+margin_bottom = 568.0
 custom_fonts/font = ExtResource( 2 )
 text = "Cancel"
 __meta__ = {
@@ -56,12 +99,25 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="."]
+margin_left = 520.0
+margin_top = 8.0
+margin_right = 638.0
+margin_bottom = 32.0
+rect_pivot_offset = Vector2( 48, 16 )
+custom_fonts/font = ExtResource( 2 )
+text = "Program 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RefLabel" type="Label" parent="."]
 margin_left = 16.0
 margin_top = 8.0
 margin_right = 134.0
 margin_bottom = 32.0
+rect_pivot_offset = Vector2( 48, 16 )
 custom_fonts/font = ExtResource( 2 )
-text = "Program 1"
+text = "Refrence"
 __meta__ = {
 "_edit_use_anchors_": false
 }

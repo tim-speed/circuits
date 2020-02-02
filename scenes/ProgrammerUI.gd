@@ -3,7 +3,7 @@ extends Control
 const max_programs = 6
 const plist_spacing = 52
 
-const programs = {}
+var programs = {}
 
 signal robot_requested
 

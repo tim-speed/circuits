@@ -13,7 +13,9 @@ func load_level(level_num):
 	#Disconnect old level signals if it existed
 	if level:
 		$ProgrammerUI.disconnect("robot_requested", level, "request_deploy_robot")
-		level.disconnect("robot_deployed", self, "set_bots_remaining")
+		level.disconnect("robot_num_change", self, "set_bots_remaining")
+		level.disconnect("request_pause", self, "pause")
+		level.disconnect("request_turn", self, "one_turn_if_paused")
 
 	# Make sure level is stopped while loading
 	stop_level()
@@ -30,15 +32,22 @@ func load_level(level_num):
 	$ControlUI.reset_buttons()
 	set_bots_remaining(level.num_robots)
 	
-	level.connect("robot_deployed", self, "set_bots_remaining")
+	level.connect("robot_num_change", self, "set_bots_remaining")
+	level.connect("request_pause", self, "pause")
+	level.connect("request_turn", self, "one_turn_if_paused")
 	$ProgrammerUI.connect("robot_requested", level, "request_deploy_robot")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func one_turn_if_paused():
+	if $ProgramTimer.is_stopped() and turns_remaining > 0:
+		turns_remaining -= 1
+		$ControlUI.turns = turns_remaining
+		get_tree().call_group("Robots", "run_turn")
 
 func set_bots_remaining(num):
 	$ProgrammerUI/BotCount.text = String(num)
+	
+func pause():
+	$ControlUI.pause()
 	
 func stop_level():
 	$ProgramTimer.stop()

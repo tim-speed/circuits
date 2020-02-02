@@ -11,7 +11,7 @@ script = ExtResource( 1 )
 turns = 55
 
 [node name="Factory" parent="." instance=ExtResource( 2 )]
-position = Vector2( 288, 64 )
+position = Vector2( 288, 0 )
 
 [node name="BrokenFriend" parent="." instance=ExtResource( 3 )]
 position = Vector2( 160, 128 )

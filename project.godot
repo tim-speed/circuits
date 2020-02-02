@@ -32,7 +32,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Game"
+config/name="Circuits"
 run/main_scene="res://scenes/Root.tscn"
 config/icon="res://icon.png"
 

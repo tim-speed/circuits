@@ -1,16 +1,23 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/Rock.gd" type="Script" id=1]
+[ext_resource path="res://sprites/rock.png" type="Texture" id=2]
 
 [node name="Rock" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
 position = Vector2( -2.11971, -0.176643 )
 color = Color( 0.560784, 0.560784, 0.560784, 1 )
 polygon = PoolVector2Array( 4.68865, 30.2855, 9.22248, 31.1687, 18.6434, 30.2266, 28.7121, 31.2276, 33.3637, 26.576, 27.6522, 14.211, 23.7661, 10.9137, 22.294, 15.212, 18.2313, 4.14235, 11.7544, 6.96864, 8.98696, 12.9745, 5.33634, 23.5142 )
 
 [node name="Polygon2D2" type="Polygon2D" parent="."]
+visible = false
 position = Vector2( -2.29635, -1.47202 )
 color = Color( 0.768627, 0.764706, 0.764706, 1 )
 polygon = PoolVector2Array( 18.6434, 12.7978, 22.824, 24.3385, 24.2371, 14.9764, 22.7651, 19.5103 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 16, 16 )
+texture = ExtResource( 2 )

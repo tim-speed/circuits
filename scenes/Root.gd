@@ -1,7 +1,7 @@
 extends Node2D
 
-var turns_remaining = 40
-var current_level = 1
+var turns_remaining = 0
+var current_level = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,8 +10,12 @@ func _ready():
 func load_level(level_num):
 	# Make sure level is stopped while loading
 	stop_level()
-	# TODO: Load level into scene and set turns from level meta
-	turns_remaining = 40
+	var level_res = load("res://levels/Level"+String(level_num)+".tscn")
+	var level = level_res.instance()
+	turns_remaining = level.turns
+	for c in $LevelContainer.get_children():
+		$LevelContainer.remove_child(c)
+	$LevelContainer.add_child(level)
 	# Update / Reset UI
 	$ControlUI.turns = turns_remaining
 	$ProgramTimer.wait_time = 1

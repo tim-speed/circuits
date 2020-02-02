@@ -1,5 +1,7 @@
 extends TileMap
+class_name Level
 
+export var turns = 40
 enum { EMPTY = -1, ACTOR, OBSTACLE, OBJECT }
 
 func _ready():

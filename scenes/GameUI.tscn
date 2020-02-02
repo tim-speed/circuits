@@ -20,6 +20,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BottomBar" type="Panel" parent="."]
+margin_top = 576.0
+margin_right = 704.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Placeholder" type="Panel" parent="."]
 margin_left = 736.0
 margin_top = 64.0

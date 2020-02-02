@@ -34,7 +34,7 @@ _global_script_class_icons={
 
 config/name="Circuits"
 run/main_scene="res://scenes/Root.tscn"
-config/icon="res://icon.png"
+config/icon="res://sprites/icon.png"
 
 [display]
 

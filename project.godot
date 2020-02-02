@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://git_api.gdns"
-}, {
 "base": "TileMap",
 "class": "Level",
 "language": "GDScript",
@@ -25,7 +20,6 @@ _global_script_classes=[ {
 "path": "res://entities/ProgramTimer.gd"
 } ]
 _global_script_class_icons={
-"GitAPI": "",
 "Level": "",
 "ProgramTimer": ""
 }
@@ -43,7 +37,7 @@ window/stretch/aspect="keep"
 
 [gdnative]
 
-singletons=[ "res://git_api.gdnlib" ]
+singletons=[  ]
 
 [rendering]
 

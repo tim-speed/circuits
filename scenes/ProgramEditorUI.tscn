@@ -65,10 +65,17 @@ coordinates for X and Y
 resolves as true when a robot is caring
 a broken robot
 
-\"CanMoveInDirection\" takes one argument
+\"CanMoveInDirection\" takes a value
  of \"Up\", \"Down\", \"Left\", or \"Right\"
 
-\"IsVarEqual\" takes two"
+\"IsVarEqual\" takes two arguments
+a Var and value
+
+\"IsAboveY\" and \"IsBelowY\"
+ take a Y value
+
+\"IsRightOfX\" and \"IsLeftOfX\"
+take a X value"
 readonly = true
 draw_tabs = true
 __meta__ = {
@@ -123,10 +130,10 @@ __meta__ = {
 
 [node name="ErrorPopup" type="PopupDialog" parent="."]
 visible = true
-margin_left = 520.0
-margin_top = 448.0
-margin_right = 992.0
-margin_bottom = 512.0
+margin_left = 530.0
+margin_top = 466.0
+margin_right = 1002.0
+margin_bottom = 530.0
 rect_pivot_offset = Vector2( -520, -448 )
 __meta__ = {
 "_edit_use_anchors_": false

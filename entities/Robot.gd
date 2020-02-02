@@ -3,42 +3,20 @@ extends AnimatedSprite
 var type = 0
 
 var program = [
-	{
-		type = "Task",
-		task = "Move",
-		options = {
-			direction_name = "Down"
-		}
-	},
-	{
-		type = "Gate",
-		condition = {
-			type = "IsAtCoordinates",
-			options = {
-				coordinates = Vector2(8, 4)
-			}
-		},
-		else_position = 4
-	},
-	{
-		type = "Task",
-		task = "Wander"
-	},
-	{
-		type = "GoTo",
-		position = 0
-	},
-	{
-		type = "Task",
-		task = "Move",
-		options = {
-			direction_name = "Right"
-		}
-	},
-	{
-		type = "GoTo",
-		position = 0
-	},
+#	{
+#		type = "Task",
+#		task = "Move",
+#		options = {
+#			direction_name = "Down"
+#		}
+#	},
+#	{
+#		type = "Task",
+#		task = "Move",
+#		options = {
+#			direction_name = "Right"
+#		}
+#	},
 ];
 
 var program_position = 0
@@ -95,6 +73,12 @@ func process_conditional_node(node):
 	match node.type:
 		"IsAtCoordinates":
 			return is_at_coordinates(node.options.coordinates)
+		"IsCompassOf":
+			return is_compass_of(
+				node.options.v, node.options.compass_direction
+			)
+		"HasBrokenFriend":
+			return has_item("BrokenRobot")
 		"HasItem":
 			return has_item(node.options.item_name)
 		"CanMoveInDirection":
@@ -104,6 +88,18 @@ func process_conditional_node(node):
 func is_at_coordinates(coordinates):
 	var grid_position = Grid.world_to_map(position)
 	return (grid_position - coordinates).length() < 1
+	
+func is_compass_of(value, compass_direction):
+	var grid_position = Grid.world_to_map(position)
+	match compass_direction:
+		"North":
+			return grid_position.y < value
+		"South":
+			return grid_position.y > value
+		"East":
+			return grid_position.x > value
+		"West":
+			return grid_position.x < value
 	
 func has_item(item_name):
 	return (!item_name && held_item) || (item_name && (item_name == held_item))

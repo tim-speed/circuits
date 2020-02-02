@@ -1,14 +1,13 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scenes/ProgramInterface.gd" type="Script" id=1]
+[ext_resource path="res://scenes/ProgramEditorUI.gd" type="Script" id=1]
 [ext_resource path="res://fonts/chubby_retro_edge.tres" type="DynamicFont" id=2]
 [ext_resource path="res://fonts/source_code.tres" type="DynamicFont" id=3]
 
-
-
 [node name="ProgramInterface" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.5
+anchor_bottom = 0.64
+margin_bottom = -3.05176e-05
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -16,36 +15,53 @@ __meta__ = {
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 512.0
-margin_bottom = 344.0
+margin_bottom = 384.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ProgramEditor" type="TextEdit" parent="."]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 508.0
-margin_bottom = 292.0
+margin_left = 8.0
+margin_top = 40.0
+margin_right = 504.0
+margin_bottom = 328.0
 custom_fonts/font = ExtResource( 3 )
+highlight_current_line = true
+show_line_numbers = true
+draw_tabs = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SaveButton" type="Button" parent="."]
 margin_left = 376.0
-margin_top = 296.0
+margin_top = 336.0
 margin_right = 503.0
-margin_bottom = 336.0
+margin_bottom = 376.0
 custom_fonts/font = ExtResource( 2 )
 text = "Save"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AbortButton" type="Button" parent="."]
-margin_left = 280.0
-margin_top = 296.0
-margin_right = 371.0
-margin_bottom = 336.0
+[node name="CancelButton" type="Button" parent="."]
+margin_left = 272.0
+margin_top = 336.0
+margin_right = 368.0
+margin_bottom = 376.0
 custom_fonts/font = ExtResource( 2 )
-text = "Abort"
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 16.0
+margin_top = 8.0
+margin_right = 134.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
+text = "Program 1"
 __meta__ = {
 "_edit_use_anchors_": false
 }

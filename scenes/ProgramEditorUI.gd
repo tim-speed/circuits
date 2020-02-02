@@ -7,19 +7,27 @@ var seperatorRegex = RegEx.new()
 var intRegex = RegEx.new()
 var directionRegex = RegEx.new()
 
+signal cancel
+signal save
+
 func _ready():
 	seperatorRegex.compile("(?<match>[0-9a-zA-Z]+)\\s*")
 	intRegex.compile("^[0-9]+$")
 	directionRegex.compile("^(Up)|(Down)|(Left)|(Right)$")
 	
 	$SaveButton.connect("pressed", self, "save")
-	
+	$CancelButton.connect("pressed", self, "cancel")
+
+func cancel():
+	emit_signal("cancel")
+
 func save():
 	var text = $ProgramEditor.text
 	var parser_output = parse(text)
 	if parser_output:
 		compiled_program = compile(parser_output)
 		print_debug(compiled_program)
+		emit_signal("save", compiled_program, text)
 
 func compile(parser_output, index = 0):
 	var compiled_output = []
@@ -54,7 +62,7 @@ func compile(parser_output, index = 0):
 					gate.else_position = inner_index
 					
 					var goto = {
-						type = "Goto"
+						type = "GoTo"
 					}
 					compiled_output.push_back(goto)
 					
@@ -74,14 +82,21 @@ func compile(parser_output, index = 0):
 					type = "Gate",
 					condition = node.condition
 				}
+				var goto = {
+					type = "GoTo",
+					position = inner_index - 1
+				}
+				
 				var compiled_children = compile(node.children, inner_index)
 				
-				inner_index += compiled_children.size()
+				inner_index += compiled_children.size() + 1
 				
 				compiled_output.push_back(gate)
 				
 				for c in compiled_children:
 					compiled_output.push_back(c)
+					
+				compiled_output.push_back(goto)
 				
 				gate.else_position = inner_index
 					
@@ -229,6 +244,16 @@ func parse_condition(parts):
 			}
 		"IsAtCoordinates":
 			return parse_condition_iac(parts)
+		"CanMoveInDirection":
+			return parse_condition_cmid(parts)
+		"IsNorthOf":
+			return parse_condition_ixo(parts, "North")
+		"IsSouthOf":
+			return parse_condition_ixo(parts, "South")
+		"IsEastOf":
+			return parse_condition_ixo(parts, "East")
+		"IsWestOf":
+			return parse_condition_ixo(parts, "West")
 		_:
 			send_parse_error(condition_type + "is not a valid condition")
 			return
@@ -249,6 +274,33 @@ func parse_condition_iac(parts):
 			coordinates = vec
 		}
 	}
+
+func parse_condition_ixo(parts, compass_direction):
+	var v_string = parts.pop_front()
+	if !intRegex.search(v_string):
+		send_parse_error("Is" + compass_direction + "Of" + " must be followed by an intiger")
+		return
+
+	return {
+		type = "IsCompassOf",
+		options = {
+			compass_direction = compass_direction,
+			v = v_string.to_int()
+		}
+	}
+
+func parse_condition_cmid(parts):
+	var direction = parts.pop_front()
+	if !directionRegex.search(direction):
+		send_parse_error("Move must be followed by Up, Down, Left, or Right")
+		return
+		
+	return {
+		type = "CanMoveInDirection",
+		options = {
+			direction_name = direction
+		}
+	}
 	
 func parse_move(parts):
 	var direction = parts.pop_front()
@@ -258,7 +310,7 @@ func parse_move(parts):
 	return {
 		type = "Move",
 		options = {
-			direction = direction
+			direction_name = direction
 		}
 	}
 

@@ -19,6 +19,8 @@ func load_level(level_num):
 	if !file.file_exists(file_path):
 		return
 	
+	current_level = level_num
+	
 	#Disconnect old level signals if it existed
 	if level:
 		$ProgrammerUI.disconnect("robot_requested", level, "request_deploy_robot")

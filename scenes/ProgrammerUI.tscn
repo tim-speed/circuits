@@ -47,8 +47,11 @@ __meta__ = {
 }
 
 [node name="Editor" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_left = -728.0
-margin_top = -128.0
-margin_right = -120.0
-margin_bottom = 117.76
+anchor_left = -2.836
+anchor_top = -0.341
+anchor_right = 1.094
+anchor_bottom = 1.295
+margin_left = 0.0160522
+margin_top = -2.96806
+margin_right = -0.0640259
+margin_bottom = 0.160248

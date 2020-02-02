@@ -10,6 +10,7 @@ script = ExtResource( 2 )
 current_level = 1
 
 [node name="GameUI" parent="." instance=ExtResource( 1 )]
+rect_pivot_offset = Vector2( 736, 144 )
 
 [node name="ProgramTimer" type="Timer" parent="."]
 script = ExtResource( 3 )

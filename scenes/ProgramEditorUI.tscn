@@ -5,9 +5,8 @@
 [ext_resource path="res://fonts/source_code.tres" type="DynamicFont" id=3]
 
 [node name="ProgramInterface" type="Control"]
-anchor_right = 0.5
-anchor_bottom = 0.64
-margin_right = 224.0
+margin_right = 1008.0
+margin_bottom = 576.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -123,10 +122,12 @@ __meta__ = {
 }
 
 [node name="ErrorPopup" type="PopupDialog" parent="."]
+visible = true
 margin_left = 520.0
 margin_top = 448.0
 margin_right = 992.0
 margin_bottom = 512.0
+rect_pivot_offset = Vector2( -520, -448 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -141,3 +142,6 @@ custom_colors/font_color = Color( 1, 0.294118, 0.294118, 1 )
 custom_colors/font_color_shadow = Color( 0.176471, 0.0196078, 0.0196078, 1 )
 text = "Error Msg"
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

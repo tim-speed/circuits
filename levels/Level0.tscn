@@ -10,3 +10,4 @@ script = ExtResource( 1 )
 turns = 34
 
 [node name="Robot" parent="." instance=ExtResource( 2 )]
+frame = 0

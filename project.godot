@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Level",
 "language": "GDScript",
 "path": "res://entities/Level.gd"
+}, {
+"base": "Timer",
+"class": "ProgramTimer",
+"language": "GDScript",
+"path": "res://entities/ProgramTimer.gd"
 } ]
 _global_script_class_icons={
 "GitAPI": "",
-"Level": ""
+"Level": "",
+"ProgramTimer": ""
 }
 
 [application]

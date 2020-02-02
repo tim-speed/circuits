@@ -1,5 +1,7 @@
 extends Timer
 
+class_name ProgramTimer
+
 func _ready():
 	connect("timeout", self, "_run_progam_turn")
 

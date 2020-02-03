@@ -15,9 +15,10 @@ signal robot_num_change
 signal request_pause
 signal request_turn
 
-enum { EMPTY = -1, ACTOR, OBSTACLE, OBJECT, FACTORY }
+enum { EMPTY = -1, ACTOR, OBSTACLE, OBJECT, FACTORY, TRAP }
 
 var Robot = preload("res://entities/Robot.tscn")
+var BrokenFriend = preload("res://entities/BrokenFriend.tscn")
 
 # TODO: Support multiple factories
 var factory
@@ -94,6 +95,8 @@ func request_move(pawn, direction):
 			set_cellv(cell_info.start, EMPTY)
 			go_home(pawn)
 			return map_to_world(cell_info.target)
+		TRAP:
+			return activate_trap(pawn, cell_info)
 		EMPTY:
 			return update_pawn_postion(pawn, cell_info.start, cell_info.target)
 		OBJECT:
@@ -102,13 +105,29 @@ func request_move(pawn, direction):
 			var object_pawn = get_cell_pawn(cell_info.target)
 			var did_pickup = pawn.pick_up(object_pawn.item_name)
 				
-			object_pawn.queue_free()	
+			object_pawn.queue_free() # Remove from parent
 			return update_pawn_postion(pawn, cell_info.start, cell_info.target)
+
+func activate_trap(pawn, cell_info):
+	if get_cellv(cell_info.start) == ACTOR:
+		set_cellv(cell_info.start, EMPTY)
+	# Remove robot and trap and place dead robot at trap
+	var trap = get_cell_pawn(cell_info.target)
+	trap.queue_free() # Remove from parent
+	pawn.queue_free() # Remove from parent
+	var friend = BrokenFriend.instance()
+	var pos = map_to_world(cell_info.target)
+	friend.position = pos
+	self.add_child(friend)
+	set_cellv(cell_info.target, OBJECT)
+	robots_in_need += 1
+	emit_signal("robot_num_change", num_robots, robots_in_need)
+	return pos
 
 func can_move(pawn, direction):
 	var cell_info = get_cell_info(pawn, direction)
 	match cell_info.type:
-		EMPTY:
+		EMPTY, TRAP:
 			return true
 		OBJECT:
 			return pawn.can_pick_up()
@@ -127,7 +146,7 @@ func go_home(pawn):
 	if robots.size() <= 1:
 		emit_signal("request_pause")
 	
-	pawn.queue_free()
+	pawn.queue_free() # Remove from parent
 	emit_signal("robot_num_change", num_robots, robots_in_need)
 
 func update_pawn_postion(pawn, cell_start, cell_target):

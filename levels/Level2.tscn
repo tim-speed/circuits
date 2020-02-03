@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://entities/Level.gd" type="Script" id=1]
 [ext_resource path="res://entities/Factory.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/BrokenFriend.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/Rock.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entities/Hole.tscn" type="PackedScene" id=5]
 
 [node name="Level2" type="TileMap"]
 format = 1
@@ -21,6 +22,9 @@ position = Vector2( 512, 288 )
 
 [node name="BrokenFriend3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 256, 320 )
+
+[node name="Hole" parent="." instance=ExtResource( 5 )]
+position = Vector2( 320, 224 )
 
 [node name="Rock" parent="." instance=ExtResource( 4 )]
 position = Vector2( 256, 96 )

@@ -1,7 +1,6 @@
 extends Node2D
 
-var type = 2
-var item_name = "Hole"
+var type = 4 # Trap
 
 func _ready():
 	pass

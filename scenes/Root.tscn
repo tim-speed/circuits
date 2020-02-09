@@ -7,7 +7,6 @@
 
 [node name="Root" type="Node2D"]
 script = ExtResource( 2 )
-current_level = 1
 
 [node name="GameUI" parent="." instance=ExtResource( 1 )]
 rect_pivot_offset = Vector2( 736, 144 )

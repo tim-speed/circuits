@@ -29,6 +29,12 @@ func _init():
 	self.cell_size.y = CELL_PIXELS
 
 func _ready():
+	setup_level()
+
+func setup_level():
+	# Clear the grid and set it up
+	clear()
+	robots_in_need = 0
 	factory = self.get_node("Factory")
 	for child in get_children():
 		if child.get("type_map") != null:
@@ -46,7 +52,7 @@ func _ready():
 			if child.type == OBJECT and child.item_name == "BrokenFriend":
 				robots_in_need += 1
 	emit_signal("robot_num_change", num_robots, robots_in_need)
-		
+	
 func request_deploy_robot(program):
 	if !(factory && num_robots > 0):
 		return

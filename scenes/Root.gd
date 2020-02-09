@@ -1,7 +1,9 @@
 extends Node2D
 
-export var current_level = 0
+var GeneratedLevel = preload("res://levels/Generated.tscn")
 
+var current_level = 1
+var generated_levels = false
 var turns_remaining = 0
 var level
 
@@ -14,10 +16,12 @@ func _input(event):
 		one_turn_if_paused()
 
 func load_level(level_num):
-	var file = File.new()
-	var file_path = "res://levels/Level"+String(level_num)+".tscn"
-	if !file.file_exists(file_path):
-		return
+	var file_path
+	if not generated_levels:
+		var file = File.new()
+		file_path = "res://levels/Level"+String(level_num)+".tscn"
+		if !file.file_exists(file_path):
+			return
 	
 	current_level = level_num
 	
@@ -30,8 +34,22 @@ func load_level(level_num):
 
 	# Make sure level is stopped while loading
 	stop_level()
-	var level_res = load(file_path)
-	level = level_res.instance()
+	if generated_levels:
+		if level:
+			if level_num == level.complexity:
+				# just refresh the level
+				level.refresh_map()
+			else:
+				# re-randomize and refresh
+				level.generate()
+		else:
+			level = GeneratedLevel.instance()
+			level.complexity = level_num
+			level.difficulty = 4
+			# TODO: level.difficulty = GeneratedLevel.EASY ...
+	else:
+		var level_res = load(file_path)
+		level = level_res.instance()
 	for c in $LevelContainer.get_children():
 		$LevelContainer.remove_child(c)
 	$LevelContainer.add_child(level)

@@ -2,8 +2,8 @@ extends Node2D
 
 var GeneratedLevel = preload("res://levels/Generated.tscn")
 
-var current_level = 1
-var generated_levels = false
+var current_level = 30
+var generated_levels = true
 var turns_remaining = 0
 var level
 

@@ -55,6 +55,9 @@ func generate():
 	# Cap obstacles so we don't have more than our grid can handle
 	obstacles = max(min(floor(MAX_CELLS / 2) - FACTORY_CELLS, obstacles), 0)
 	
+	print("Placing ", bots_in_need, " bots, ", obstacles, " rocks, ", \
+		traps, " holes")
+	
 	# Place factory
 	# Y coordinate gets cut 1 short of the total grid so robots have room
 	# to enter and exit the factory from the bottom
@@ -82,25 +85,16 @@ func generate():
 	#  to factory for empty and bot cells around them
 	# TODO: Add a more intelligent method as well that places them according to
 	#  the difficulty setting, like in more challenging places.
+	var empty_cells = get_empty_cells(grid)
+	obstacles = min(obstacles, empty_cells.size())
+	print("Empty cells while placing obstacles: ", empty_cells.size())
 	for _i in range(obstacles):
-		var placing = true
-		while placing:
-			var ry = randi() % GRID_ROWS
-			var rx = randi() % GRID_COLUMNS
-			if grid[ry][rx] == CELL_EMPTY:
-				var can_place = false
-				for cy in range(3):
-					var y = ry + cy - 1
-					if y >= 0 and y < GRID_ROWS:
-						for cx in range(3):
-							var x = rx + cx - 1
-							if x >= 0 and x < GRID_COLUMNS and not \
-								(x == rx and y == ry):
-								can_place = check_path_to_factory(x, y, \
-									fex, fey)
-				if can_place:
-					grid[ry][rx] = CELL_ROCK
-				break
+		while empty_cells.size() > 0:
+			var rand_cell_i = randi() % empty_cells.size()
+			var rand_cell = empty_cells[rand_cell_i]
+			if check_path_to_factory(rand_cell.x, rand_cell.y, fex, fey):
+				grid[rand_cell.y][rand_cell.x] = CELL_ROCK
+			empty_cells.remove(rand_cell_i)
 	
 	# Place traps
 	# TODO: Intelligent trap placement
@@ -112,6 +106,10 @@ func refresh_map():
 	# Clear level
 	for c in get_children():
 		remove_child(c)
+		
+	var bots_placed = 0
+	var rocks_placed = 0
+	var holes_placed = 0
 	
 	# Add Entities to Level
 	var factory_placed = false
@@ -120,15 +118,21 @@ func refresh_map():
 		for x in range(GRID_COLUMNS):
 			match (row[x]):
 				CELL_BOT:
+					bots_placed += 1
 					add_entity(BrokenFriend, x, y)
 				CELL_ROCK:
+					rocks_placed += 1
 					add_entity(Rock, x, y)
 				CELL_HOLE:
+					holes_placed += 1
 					add_entity(Hole, x, y)
 				CELL_FACTORY:
 					if not factory_placed:
 						add_entity(Factory, x, y)
 						factory_placed = true
+	
+	print("Placed ", bots_placed, " bots, ", rocks_placed, " rocks, ", \
+		holes_placed, " holes")
 	
 	# Set level defaults to make it solvable based on difficulty
 	# TODO: trap detection on path and total turn setting to make it solveable
@@ -142,14 +146,26 @@ func add_entity(type, grid_x, grid_y):
 	add_child(e)
 
 enum { DIR_NORTH = 0, DIR_EAST, DIR_SOUTH, DIR_WEST }
-	
+
+func get_empty_cells(grid):
+	var cells = []
+	for y in range(GRID_ROWS):
+		for x in range(GRID_COLUMNS):
+			if grid[y][x] == CELL_EMPTY:
+				cells.append(Vector2(x, y))
+	return cells
+
+func copy_grid(grid):
+	var maze = grid.duplicate()
+	for y in range(GRID_ROWS):
+		maze[y] = grid[y].duplicate()
+	return maze
+		
 func check_path_to_factory(x, y, fx, fy):
 	if grid[y][x] != CELL_EMPTY:
 		return false
 	# Copy the grid for maze solving
-	var maze = grid.duplicate()
-	for y in range(GRID_ROWS):
-		maze[y] = maze[y].duplicate()
+	var maze = copy_grid(grid)
 	# Use clockwise max solving to determine if we have a clear path to fx, fy
 	var dir = -1
 	var curx = x
@@ -181,6 +197,8 @@ func check_path_to_factory(x, y, fx, fy):
 			nexty += ymod
 			if nextx == fx and nexty == fy:
 				# We made it to the factory entrance
+				print("\nFound factory:")
+				print_grid(maze)
 				return true
 			if nextx < 0 or nexty < 0 or nextx >= GRID_COLUMNS or \
 				nexty >= GRID_ROWS:
@@ -210,4 +228,30 @@ func check_path_to_factory(x, y, fx, fy):
 			# Could not find any new or previous traversable 
 			break # Outer loop
 		# Else can't move anymore so go back to top of loop to rotate
+	print("\nFailed to find factory:")
+	print_grid(maze)
 	return false
+
+func print_grid(grid):
+	var borderline = "-".repeat(GRID_COLUMNS + 2)
+	print(borderline)
+	for y in range(GRID_ROWS):
+		var line = "|"
+		for x in range(GRID_COLUMNS):
+			match grid[y][x]:
+				CELL_EMPTY:
+					line += " "
+				CELL_BOT:
+					line += "b"
+				CELL_FACTORY:
+					line += "F"
+				CELL_HOLE:
+					line += "o"
+				CELL_ROCK:
+					line += "#"
+				MAZE_CELL_MARKER:
+					line += "*"
+				MAZE_CELL_DEAD:
+					line += "X"
+		print(line + "|")
+	print(borderline)

@@ -48,13 +48,13 @@ func generate():
 	var extra_challenges = round(complexity * 0.25 * difficulty)
 	# Cap extra challenges so we don't have more than our grid can handle
 	extra_challenges = max(min(\
-		floor(MAX_CELLS / 2) - FACTORY_CELLS - bots_in_need, extra_challenges),\
-		0)
+		floor(MAX_CELLS / 2.0) - FACTORY_CELLS - bots_in_need, \
+		extra_challenges), 0)
 	var traps = round(extra_challenges * randf())
 	bots_in_need += extra_challenges - traps
 	var obstacles = floor(max((complexity - 1) * ((randi() % 8) + 1), 0))
 	# Cap obstacles so we don't have more than our grid can handle
-	obstacles = max(min(floor(MAX_CELLS / 2) - FACTORY_CELLS, obstacles), 0)
+	obstacles = max(min(floor(MAX_CELLS / 2.0) - FACTORY_CELLS, obstacles), 0)
 	
 	print("Placing ", bots_in_need, " bots, ", obstacles, " rocks, ", \
 		traps, " holes")
@@ -146,18 +146,18 @@ func add_entity(type, grid_x, grid_y):
 	e.position = Vector2(grid_x * CELL_PIXELS, grid_y * CELL_PIXELS)
 	add_child(e)
 
-func get_empty_cells(grid: Array):
+func get_empty_cells(g: Array):
 	var cells = []
 	for y in range(GRID_ROWS):
 		for x in range(GRID_COLUMNS):
-			if grid[y][x] == CELL_EMPTY:
+			if g[y][x] == CELL_EMPTY:
 				cells.append(Vector2(x, y))
 	return cells
 
-func copy_grid(grid: Array):
-	var maze = grid.duplicate()
+func copy_grid(g: Array):
+	var maze = g.duplicate()
 	for y in range(GRID_ROWS):
-		maze[y] = grid[y].duplicate()
+		maze[y] = g[y].duplicate()
 	return maze
 	
 func grid_to_maze(maze: Array):
@@ -170,114 +170,63 @@ func grid_to_maze(maze: Array):
 					maze[y][x] = MAZE_CELL_EMPTY
 	return maze
 	
-func is_cell_blocked(grid: Array, pos: Vector2):
+func is_cell_blocked(g: Array, pos: Vector2):
 	if pos.x < 0 or pos.x >= GRID_COLUMNS or pos.y < 0 or pos.y >= GRID_ROWS:
 		# out of bounds is blocked
 		return true
-	match grid[pos.y][pos.x]:
+	match g[pos.y][pos.x]:
 		CELL_ROCK, MAZE_CELL_BLOCKED:
 			return true
 	return false
+
+func grid_pos_id(pos: Vector2):
+	return pos.x + 1 + (pos.y * GRID_COLUMNS)
+
+func id_grid_pos(id: int):
+	var i = id - 1
+	return Vector2(i % GRID_COLUMNS, floor(i / float(GRID_COLUMNS)))
 		
 func check_path(start: Vector2, dest: Vector2):
-	if is_cell_blocked(grid, start):
+	if is_cell_blocked(grid, start) or is_cell_blocked(grid, dest):
 		return false
 	# Copy the grid for maze solving
 	var maze = grid_to_maze(copy_grid(grid))
 	# Set the start and destination on it
 	maze[start.y][start.x] = MAZE_CELL_START
 	maze[dest.y][dest.x] = MAZE_CELL_END
-	# Use clockwise max solving to determine if we have a clear path to fx, fy
-	# Start from north
-	var vfront = Vector2(0, 1)
-	var pos = start
-	var moves = [start]
-	var rotations = 0
-	# Rotation Loop
-	while true:
-		# Advancement Loop
-		while true:
-			var next = pos + vfront
-			if next == dest:
-				# We made it to the factory entrance
-				print("\nFound factory:")
-				print_grid(maze, grid)
-				return true
-			if is_cell_blocked(maze, next):
-				var vright = vfront.rotated(deg2rad(90)).round()
-				var vbackright = vright.rotated(deg2rad(45)).round()
-				var vback = vfront.rotated(deg2rad(180)).round()
-				var vbackleft = vback.rotated(deg2rad(45)).round()
-				var vleft = vfront.rotated(deg2rad(270)).round()
-				# Here we can check for a few patterns and insert a block if 
-				#  applicable to make sure our algorithm doesn't come back
-				#
-				#      ? X ?  |  ? X ?  |  ? X ?
-				#      _ _ X  |  X _ X  |  _ _ _
-				#      _ _ ?  |  ? _ ?  |  _ _ _
-				#
-				# In any orientation of the above 3x3 squares, we can block off
-				#  the center square so we don't bother stepping on it again
-				#  where ? don't matter, X indicates a blocker and _ an empty
-				if is_cell_blocked(maze, pos + vleft):
-					if is_cell_blocked(maze, pos + vright) or \
-						not is_cell_blocked(maze, pos + vbackright):
-						# Block and reverse
-						maze[pos.y][pos.x] = MAZE_CELL_BLOCKED
-						rotations = 0
-						if moves.size() > 1:
-							moves.pop_back()
-							pos = moves[moves.size() - 1]
-						else:
-							pos = start
-				elif is_cell_blocked(maze, pos + vright):
-					if !is_cell_blocked(maze, pos + vbackleft):
-						# Block and reverse
-						maze[pos.y][pos.x] = MAZE_CELL_BLOCKED
-						rotations = 0
-						if moves.size() > 1:
-							moves.pop_back()
-							pos = moves[moves.size() - 1]
-						else:
-							pos = start
-				elif not is_cell_blocked(maze, pos + vbackright) and \
-					not is_cell_blocked(maze, pos + vbackleft):
-					# Block and reverse
-					maze[pos.y][pos.x] = MAZE_CELL_BLOCKED
-					rotations = 0
-					if moves.size() > 1:
-						moves.pop_back()
-						pos = moves[moves.size() - 1]
-					else:
-						pos = start
-				break # Loop to rotate
-#			if maze[next.y][next.x] == MAZE_CELL_MARKER:
-#				if rotations < 4:
-#					# Treat as blocking until we try all directions from 
-#					#  this cell
-#					break # Loop to rotate
-#				else:
-#					# Allow traversal but mark the current cell as dead
-#					maze[pos.y][pos.x] = MAZE_CELL_BLOCKED
-			# Set a path marker and continue
-			if next != start:
-				maze[next.y][next.x] = MAZE_CELL_MARKER
-			moves.append(next)
-			pos = next
-			# Reset rotations because we moved successfully
-			rotations = 0
-		# Rotate the direction
-		rotations += 1
-		vfront = vfront.rotated(deg2rad(90)).round()
-		# Check if stuck
-		# TODO: Actually check the blocks around it
-		if rotations > 10 or moves.size() > GRID_COLUMNS * GRID_COLUMNS:
-			# Could not find any new or previous traversable 
-			break # Outer loop
-		# Else can't move anymore so go back to top of loop to rotate
-	print("\nFailed to find factory:")
+	
+	var path = AStar2D.new()
+	for y in range(GRID_ROWS):
+		for x in range(GRID_COLUMNS):
+			var pos = Vector2(x, y)
+			var i = grid_pos_id(pos)
+			if is_cell_blocked(maze, pos):
+				continue
+			path.add_point(i, pos)
+			# Connect to neighbours if able
+			# Left
+			if !is_cell_blocked(maze, Vector2(x - 1, y)):
+				path.connect_points(i, i - 1)
+			# Above
+			if !is_cell_blocked(maze, Vector2(x, y - 1)):
+				path.connect_points(i, i - GRID_COLUMNS)
+			# The connecting is bidirectional so we only ever need to look back
+	
+	var start_id = grid_pos_id(start)
+	var dest_id = grid_pos_id(dest)
+	var p = path.get_id_path(start_id, dest_id)
+	
+	# DEBUG PRINTING
+	for pp in p:
+		var v = id_grid_pos(pp)
+		if v != start && v != dest:
+			maze[v.y][v.x] = MAZE_CELL_MARKER
+	
+	# if p.size() == 0:
+	print("\nPATH DEBUG:")
 	print_grid(maze, grid)
-	return false
+	
+	return p.size() > 1
 
 func cell_to_char(cellv: int):
 	match cellv:
